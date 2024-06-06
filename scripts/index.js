@@ -1,7 +1,7 @@
 // @ts-check
 
 //movie card +
-class MovieCard {
+export class MovieCard {
   constructor(data) {
     this.posterUrl = data.posterUrl;
     this.title = data.title;
@@ -60,7 +60,7 @@ class MovieCard {
 }
 
 //movies list +
-class MoviesList {
+export class MoviesList {
   constructor(movieCards) {
     this.movieCards = movieCards;
   }
@@ -147,7 +147,7 @@ class Select {
   }
 }
 
-//pagination (count of 'a' & 'li' attributes)
+//pagination +
 class Pagination {
   getHtml() {
     const nav = document.createElement('nav');
@@ -201,38 +201,3 @@ class Pagination {
     return nav;
   }
 }
-
-//trial period
-// const firstMovie = new MovieCard({
-//   posterUrl:
-//     'https://img.freepik.com/free-photo/the-adorable-illustration-of-kittens-playing-in-the-forest-generative-ai_260559-483.jpg?size=338&ext=jpg&ga=GA1.1.44546679.1716220800&semt=ais_user',
-//   title: 'Green Mile',
-//   year: '1999',
-//   ranking: '9.5',
-//   genres: ['drama', 'comedy'],
-// });
-
-// const secondMovieCard = new MovieCard({
-//   posterUrl:
-//     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBC7mjvM5ScpKdw_anvVZ7ptcF7gEjF8NWV4p2pZdubQ&s',
-//   title: 'Green Mine',
-//   year: '2000',
-//   ranking: '8',
-//   genres: ['drama', 'comedy', 'tragedy'],
-// });
-
-// const movieCards = [firstMovie, secondMovieCard];
-
-// const sideBar = new Sidebar();
-// const body = document.querySelector('body');
-// body.append(sideBar.getHtml());
-
-// const firstSelect = new Select(['1991', '1992', '1993']);
-// const body = document.querySelector('body');
-// body.append(firstSelect.getHtml());
-
-// const firstMoviesList = new MoviesList(movieCards)
-
-// const body = document.querySelector('body');
-// const pagination = new Pagination();
-// body.append(pagination.getHtml());
