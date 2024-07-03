@@ -1,6 +1,6 @@
 import { makeHttpCall } from './utils.js';
 import { MoviesList } from './movies-list.js';
-import { genresList } from './genres.js';
+import { genresResponse } from './genres.js';
 
 //images response
 try {
