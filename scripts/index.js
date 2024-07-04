@@ -14,6 +14,7 @@ try {
     page: '10',
     minRank: '7.4',
     maxRank: '7.6',
+    sort: 'popularity.desc'
   });
   document.querySelector('body').append(moviesList.getHtml());
 } catch (error) {

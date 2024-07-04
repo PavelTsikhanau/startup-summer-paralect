@@ -5,16 +5,16 @@ export const genresResponse = await makeHttpCall(
 );
 
 const genresList = genresResponse.genres;
-const genreNameByCode = {};
-const genreCodeByName = {};
 
-genresList.forEach((item) => {
-  genreNameByCode[item.id] = item.name;
-});
+const genreCodeByName = genresList.reduce((accum, item) => {
+  accum[item.name] = item.id;
+  return accum;
+}, {});
 
-genresList.forEach((item) => {
-  genreCodeByName[item.name] = item.id;
-});
+const genreNameByCode = genresList.reduce((accum, item) => {
+  accum[item.id] = item.name;
+  return accum;
+}, {});
 
-console.log(genreNameByCode);
 console.log(genreCodeByName);
+console.log(genreNameByCode);

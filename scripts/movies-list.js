@@ -15,33 +15,33 @@ export class MoviesList {
       'https://api.themoviedb.org/3/discover/movie'
     );
 
-    if(filters.page !== undefined) {
+    if (filters.page !== undefined) {
       moviesListURL.searchParams.set('page', filters.page);
     }
 
-    if(filters.genre !== undefined) {
+    if (filters.genre !== undefined) {
       moviesListURL.searchParams.set('with_genres', filters.genre);
     }
 
-    if(filters.language !== undefined) {
+    if (filters.language !== undefined) {
       moviesListURL.searchParams.set('language', filters.language);
     }
 
-    if(filters.year !== undefined) {
+    if (filters.year !== undefined) {
       moviesListURL.searchParams.set('primary_release_year', filters.year);
     }
 
-    if(filters.maxRank !== undefined) {
+    if (filters.maxRank !== undefined) {
       moviesListURL.searchParams.set('vote_average.lte', filters.maxRank);
     }
 
-    if(filters.minRank !== undefined) {
+    if (filters.minRank !== undefined) {
       moviesListURL.searchParams.set('vote_average.gte', filters.minRank);
     }
 
-    // if(filters.genre !== undefined) {
-    //   moviesListURL.searchParams.set('with_genres', filters.genre);
-    // }
+    if (filters.sort !== undefined) {
+      moviesListURL.searchParams.set('sort_by', filters.sort);
+    }
 
     const moviesShortInfo = await makeHttpCall(moviesListURL);
     const movieCardPromises = moviesShortInfo.results.map(
