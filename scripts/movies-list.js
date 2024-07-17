@@ -1,49 +1,60 @@
 import { MovieCard } from './movie-card.js';
 import { makeHttpCall } from './utils.js';
+import { Pagination } from './pagination.js';
 
 export class MoviesList {
   // constructor(movieCards) {
   //   this.movieCards = movieCards;
   // }
 
+  #moviesList
+  #pagination
   constructor(configuration) {
     this.configuration = configuration;
+    this.html = document.createElement('div');
+    this.html.classList.add('movies-list-wrapper');
+    this.#moviesList = document.createElement('div');
+    this.#moviesList.classList.add('movies-list');
+    this.html.append(this.#moviesList);
+    this.#pagination = new Pagination();
+    this.html.append(this.#pagination.html);
   }
 
-  async loadMovies(filters = {}) {
+  async #getMovieCards(filters = {}) {
     const moviesListURL = new URL(
       'https://api.themoviedb.org/3/discover/movie'
     );
 
-    if (filters.page !== undefined) {
+    if (filters.page) {
       moviesListURL.searchParams.set('page', filters.page);
     }
 
-    if (filters.genre !== undefined) {
-      moviesListURL.searchParams.set('with_genres', filters.genre);
+    if (filters.genres || filters.genres?.length > 0) {
+      moviesListURL.searchParams.set('with_genres', filters.genres.join(','));
     }
 
-    if (filters.language !== undefined) {
+    if (filters.language) {
       moviesListURL.searchParams.set('language', filters.language);
     }
 
-    if (filters.year !== undefined) {
+    if (filters.year) {
       moviesListURL.searchParams.set('primary_release_year', filters.year);
     }
 
-    if (filters.maxRank !== undefined) {
+    if (filters.maxRank) {
       moviesListURL.searchParams.set('vote_average.lte', filters.maxRank);
     }
 
-    if (filters.minRank !== undefined) {
+    if (filters.minRank) {
       moviesListURL.searchParams.set('vote_average.gte', filters.minRank);
     }
 
-    if (filters.sort !== undefined) {
+    if (filters.sort) {
       moviesListURL.searchParams.set('sort_by', filters.sort);
     }
 
     const moviesShortInfo = await makeHttpCall(moviesListURL);
+    this.#pagination.render(moviesShortInfo.total_pages, moviesShortInfo.page)
     const movieCardPromises = moviesShortInfo.results.map(
       async (movieShortInfo) => {
         try {
@@ -59,15 +70,15 @@ export class MoviesList {
       }
     );
 
-    this.movieCards = await Promise.all(movieCardPromises);
+    return await Promise.all(movieCardPromises);
   }
 
-  getHtml() {
-    const moviesList = document.createElement('div');
-    moviesList.classList.add('movies-list');
-    this.movieCards.forEach((movieCard) => {
-      moviesList.appendChild(movieCard.getHtml());
-    });
-    return moviesList;
+  async render(filters = {}) {
+    const movieCards = await this.#getMovieCards(filters);
+    const movieCardsHtml = movieCards.map((movieCard) => {
+      return movieCard.getHtml();
+    })
+    this.#moviesList.replaceChildren();
+    this.#moviesList.append(...movieCardsHtml);
   }
 }

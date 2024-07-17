@@ -1,6 +1,10 @@
 import { makeHttpCall } from './utils.js';
 import { MoviesList } from './movies-list.js';
 import { genresResponse } from './genres.js';
+import { Select } from './select.js';
+import { MainContainer } from './main-container.js';
+import { Sidebar } from './sidebar.js';
+import { Pagination } from './pagination.js';
 
 //images response
 try {
@@ -9,14 +13,30 @@ try {
   );
 
   const moviesList = new MoviesList(configuration);
-  await moviesList.loadMovies({
-    genre: '878',
-    page: '10',
-    minRank: '7.4',
-    maxRank: '7.6',
-    sort: 'popularity.desc'
-  });
-  document.querySelector('body').append(moviesList.getHtml());
+
+  const sidebar = new Sidebar();
+
+  const mainContainer = new MainContainer(sidebar, moviesList);
+  document.querySelector('body').append(mainContainer.html);
+
+
+  await moviesList.render();
+
+
+
+  // setTimeout(async (  
+  // ) => {
+  //   await moviesList.render({
+  //     genres: ['16'],
+  //     maxRank: '7.6',
+  //     sort: 'popularity.asc'
+  //   });
+  // }, 5000)
+
+
 } catch (error) {
   console.error(error);
 }
+
+//тотал пейдж = 1  -- не нужны стрелки
+//current page 1 -- стрелка неактивна

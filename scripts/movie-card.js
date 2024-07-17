@@ -19,11 +19,10 @@ export class MovieCard {
         `https://api.themoviedb.org/3/movie/${this.id}`
       );
       this.genres = movieFullInfo.genres.map((genre) => genre.name);
-      this.posterUrl = `${this.configuration.images.base_url}${this.configuration.images.poster_sizes[6]}${movieFullInfo.poster_path}`;
+      this.posterUrl = `${this.configuration.images.base_url}w500${movieFullInfo.poster_path}`;
       this.year = new Date(movieFullInfo.release_date).getFullYear();
       this.title = movieFullInfo.original_title;
       this.ranking = movieFullInfo.vote_average;
-
   }
 
   getHtml() {

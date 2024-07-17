@@ -1,6 +1,7 @@
 export class Select {
   constructor(options) {
     this.options = options;
+    
   }
   getHtml() {
     const select = document.createElement('select');
