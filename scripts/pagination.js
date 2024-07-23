@@ -38,19 +38,26 @@ export class Pagination {
     this.html = nav;
   }
 
-  render(totalPages, currentPage) {
+  render(totalPages, currentPage, changePageCb) {
     this.ul.replaceChildren();
     this.ul.append(this.liForPrevious);
     for (let i = 1; i <= totalPages; i++) {
       const li = document.createElement('li');
+     
       li.classList.add('page-item');
       this.ul.append(li);
 
       const a = document.createElement('a');
       a.classList.add('page-link');
+      a.setAttribute('data-page', i)
       a.setAttribute('href', '#');
       a.innerText = i;
       li.append(a);
+
+      a.addEventListener('click', (event) => {
+        event.preventDefault();
+        changePageCb(event.target.getAttribute('data-page'));
+      })
 
       if(i === currentPage) {
         li.classList.add('current-page');

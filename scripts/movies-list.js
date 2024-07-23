@@ -20,6 +20,10 @@ export class MoviesList {
     this.html.append(this.#pagination.html);
   }
 
+  async #changePage(page) {
+    await this.render({page})
+  }
+
   async #getMovieCards(filters = {}) {
     const moviesListURL = new URL(
       'https://api.themoviedb.org/3/discover/movie'
@@ -54,7 +58,7 @@ export class MoviesList {
     }
 
     const moviesShortInfo = await makeHttpCall(moviesListURL);
-    this.#pagination.render(moviesShortInfo.total_pages, moviesShortInfo.page)
+    this.#pagination.render(moviesShortInfo.total_pages, moviesShortInfo.page, this.#changePage.bind(this))
     const movieCardPromises = moviesShortInfo.results.map(
       async (movieShortInfo) => {
         try {
