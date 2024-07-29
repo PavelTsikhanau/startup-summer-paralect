@@ -23,7 +23,6 @@ export class Pagination {
     this.liForNext = document.createElement('li');
     this.liForNext.classList.add('page-item');
 
-
     const aForNext = document.createElement('a');
     aForNext.classList.add('page-link');
     aForNext.setAttribute('href', '#');
@@ -38,18 +37,41 @@ export class Pagination {
     this.html = nav;
   }
 
+  #getPaginationOffset(totalPages, currentPage) {
+    if(totalPages >= 7) {
+      return {
+        leftOffset: 3,
+        rightOffset: 3,
+      }
+    }
+    
+  }
+
   render(totalPages, currentPage, changePageCb) {
     this.ul.replaceChildren();
     this.ul.append(this.liForPrevious);
-    for (let i = 1; i <= totalPages; i++) {
+    let offset = this.#getPaginationOffset(totalPages, currentPage);
+    let startPage = currentPage - offset.leftOffset;
+    let endPage = currentPage + offset.rightOffset;
+    if (startPage < 1) {
+      endPage = endPage + (1 - startPage);
+      startPage = 1;
+    }
+
+    if (endPage > totalPages) {
+      startPage = startPage - (endPage - totalPages);
+      endPage = totalPages;
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
       const li = document.createElement('li');
-     
+
       li.classList.add('page-item');
       this.ul.append(li);
 
       const a = document.createElement('a');
       a.classList.add('page-link');
-      a.setAttribute('data-page', i)
+      a.setAttribute('data-page', i);
       a.setAttribute('href', '#');
       a.innerText = i;
       li.append(a);
@@ -57,12 +79,16 @@ export class Pagination {
       a.addEventListener('click', (event) => {
         event.preventDefault();
         changePageCb(event.target.getAttribute('data-page'));
-      })
+      });
 
-      if(i === currentPage) {
+      if (i === currentPage) {
         li.classList.add('current-page');
       }
     }
     this.ul.append(this.liForNext);
   }
 }
+
+//start page 1-3 (-2)
+//current 1
+//end 1+3 (4)
