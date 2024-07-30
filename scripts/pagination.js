@@ -9,30 +9,30 @@ export class Pagination {
     this.liForPrevious = document.createElement('li');
     this.liForPrevious.classList.add('page-item');
 
-    const aForPrevious = document.createElement('a');
-    aForPrevious.classList.add('page-link');
-    aForPrevious.setAttribute('href', '#');
-    aForPrevious.setAttribute('aria-label', 'Previous');
-    this.liForPrevious.append(aForPrevious);
+    this.aForFirst = document.createElement('a');
+    this.aForFirst.classList.add('page-link');
+    this.aForFirst.setAttribute('href', '#');
+    this.aForFirst.setAttribute('aria-label', 'Previous');
+    this.liForPrevious.append(this.aForFirst);
 
     const spanForPrevious = document.createElement('span');
     spanForPrevious.setAttribute('aria-hidden', 'true');
     spanForPrevious.innerHTML = '&laquo;';
-    aForPrevious.append(spanForPrevious);
+    this.aForFirst.append(spanForPrevious);
 
     this.liForNext = document.createElement('li');
     this.liForNext.classList.add('page-item');
 
-    const aForNext = document.createElement('a');
-    aForNext.classList.add('page-link');
-    aForNext.setAttribute('href', '#');
-    aForNext.setAttribute('aria-label', 'Next');
-    this.liForNext.append(aForNext);
+    const aForLast = document.createElement('a');
+    aForLast.classList.add('page-link');
+    aForLast.setAttribute('href', '#');
+    aForLast.setAttribute('aria-label', 'Next');
+    this.liForNext.append(aForLast);
 
     const spanForNext = document.createElement('span');
     spanForNext.setAttribute('aria-hidden', 'true');
     spanForNext.innerHTML = '&raquo;';
-    aForNext.append(spanForNext);
+    aForLast.append(spanForNext);
 
     this.html = nav;
   }
@@ -84,6 +84,18 @@ export class Pagination {
       if (i === currentPage) {
         li.classList.add('current-page');
       }
+
+      //arrow button
+      if (currentPage === 1) {
+        this.aForFirst.classList.add('disabled');
+      } else {
+        this.aForFirst.classList.remove('disabled');
+      }
+
+      this.aForFirst.addEventListener('click', (event) => {
+        event.preventDefault();
+        changePageCb()
+      })
     }
     this.ul.append(this.liForNext);
   }

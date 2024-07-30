@@ -1,10 +1,7 @@
 import { makeHttpCall } from './utils.js';
 import { MoviesList } from './movies-list.js';
-import { genresResponse } from './genres.js';
-import { Select } from './select.js';
 import { MainContainer } from './main-container.js';
 import { Sidebar } from './sidebar.js';
-import { Pagination } from './pagination.js';
 
 //images response
 try {
@@ -19,12 +16,9 @@ try {
   const mainContainer = new MainContainer(sidebar, moviesList);
   document.querySelector('body').append(mainContainer.html);
 
-
   await moviesList.render();
 
-
-
-  // setTimeout(async (  
+  // setTimeout(async (
   // ) => {
   //   await moviesList.render({
   //     genres: ['16'],
@@ -32,10 +26,8 @@ try {
   //     sort: 'popularity.asc'
   //   });
   // }, 5000)
-
-
 } catch (error) {
-  console.error(error);
+  console.error(`${error}. Просто включи ВПН!`);
 }
 
 //тотал пейдж = 1  -- не нужны стрелки
