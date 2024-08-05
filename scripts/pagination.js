@@ -9,42 +9,46 @@ export class Pagination {
     this.liForPrevious = document.createElement('li');
     this.liForPrevious.classList.add('page-item');
 
-    this.aForFirst = document.createElement('a');
-    this.aForFirst.classList.add('page-link');
-    this.aForFirst.setAttribute('href', '#');
-    this.aForFirst.setAttribute('aria-label', 'Previous');
-    this.liForPrevious.append(this.aForFirst);
+    this.aForPrevious = document.createElement('a');
+    this.aForPrevious.classList.add('page-link');
+    this.aForPrevious.setAttribute('href', '#');
+    this.aForPrevious.setAttribute('aria-label', 'Previous');
+    this.liForPrevious.append(this.aForPrevious);
 
     const spanForPrevious = document.createElement('span');
     spanForPrevious.setAttribute('aria-hidden', 'true');
     spanForPrevious.innerHTML = '&laquo;';
-    this.aForFirst.append(spanForPrevious);
+    this.aForPrevious.append(spanForPrevious);
 
     this.liForNext = document.createElement('li');
     this.liForNext.classList.add('page-item');
 
-    const aForLast = document.createElement('a');
-    aForLast.classList.add('page-link');
-    aForLast.setAttribute('href', '#');
-    aForLast.setAttribute('aria-label', 'Next');
-    this.liForNext.append(aForLast);
+    this.aForNext = document.createElement('a');
+    this.aForNext.classList.add('page-link');
+    this.aForNext.setAttribute('href', '#');
+    this.aForNext.setAttribute('aria-label', 'Next');
+    this.liForNext.append(this.aForNext);
 
     const spanForNext = document.createElement('span');
     spanForNext.setAttribute('aria-hidden', 'true');
     spanForNext.innerHTML = '&raquo;';
-    aForLast.append(spanForNext);
+    this.aForNext.append(spanForNext);
 
     this.html = nav;
   }
 
   #getPaginationOffset(totalPages, currentPage) {
-    if(totalPages >= 7) {
+    if (totalPages >= 7) {
       return {
         leftOffset: 3,
         rightOffset: 3,
-      }
+      };
+    } else {
+      return {
+        leftOffset: 3,
+        rightOffset: 3,
+      };
     }
-    
   }
 
   render(totalPages, currentPage, changePageCb) {
@@ -53,6 +57,11 @@ export class Pagination {
     let offset = this.#getPaginationOffset(totalPages, currentPage);
     let startPage = currentPage - offset.leftOffset;
     let endPage = currentPage + offset.rightOffset;
+    if (totalPages < 7) {
+      startPage = 1;
+      endPage = totalPages;
+    }
+
     if (startPage < 1) {
       endPage = endPage + (1 - startPage);
       startPage = 1;
@@ -84,23 +93,29 @@ export class Pagination {
       if (i === currentPage) {
         li.classList.add('current-page');
       }
-
-      //arrow button
-      if (currentPage === 1) {
-        this.aForFirst.classList.add('disabled');
-      } else {
-        this.aForFirst.classList.remove('disabled');
-      }
-
-      this.aForFirst.addEventListener('click', (event) => {
-        event.preventDefault();
-        changePageCb()
-      })
     }
+
+    //arrow button
+    if (currentPage === 1) {
+      this.aForPrevious.classList.add('disabled');
+    } else {
+      this.aForPrevious.classList.remove('disabled');
+    }
+    this.aForPrevious.onclick = (event) => {
+      event.preventDefault();
+      changePageCb(currentPage - 1);
+    };
+
+    if (currentPage === totalPages) {
+      this.aForNext.classList.add('disabled');
+    } else {
+      this.aForNext.classList.remove('disabled');
+    }
+    this.aForNext.onclick = (event) => {
+      event.preventDefault();
+      changePageCb(currentPage - 1);
+    };
+
     this.ul.append(this.liForNext);
   }
 }
-
-//start page 1-3 (-2)
-//current 1
-//end 1+3 (4)

@@ -3,12 +3,8 @@ import { makeHttpCall } from './utils.js';
 import { Pagination } from './pagination.js';
 
 export class MoviesList {
-  // constructor(movieCards) {
-  //   this.movieCards = movieCards;
-  // }
-
-  #moviesList
-  #pagination
+  #moviesList;
+  #pagination;
   constructor(configuration) {
     this.configuration = configuration;
     this.html = document.createElement('div');
@@ -21,7 +17,7 @@ export class MoviesList {
   }
 
   async #changePage(page) {
-    await this.render({page})
+    await this.render({ page });
   }
 
   async #getMovieCards(filters = {}) {
@@ -58,7 +54,11 @@ export class MoviesList {
     }
 
     const moviesShortInfo = await makeHttpCall(moviesListURL);
-    this.#pagination.render(moviesShortInfo.total_pages, moviesShortInfo.page, this.#changePage.bind(this))
+    this.#pagination.render(
+      moviesShortInfo.total_pages,
+      moviesShortInfo.page,
+      this.#changePage.bind(this)
+    );
     const movieCardPromises = moviesShortInfo.results.map(
       async (movieShortInfo) => {
         try {
@@ -81,7 +81,7 @@ export class MoviesList {
     const movieCards = await this.#getMovieCards(filters);
     const movieCardsHtml = movieCards.map((movieCard) => {
       return movieCard.getHtml();
-    })
+    });
     this.#moviesList.replaceChildren();
     this.#moviesList.append(...movieCardsHtml);
   }

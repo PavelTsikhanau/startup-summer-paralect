@@ -3,7 +3,6 @@ import { MoviesList } from './movies-list.js';
 import { MainContainer } from './main-container.js';
 import { Sidebar } from './sidebar.js';
 
-//images response
 try {
   const configuration = await makeHttpCall(
     'https://api.themoviedb.org/3/configuration'
@@ -17,18 +16,6 @@ try {
   document.querySelector('body').append(mainContainer.html);
 
   await moviesList.render();
-
-  // setTimeout(async (
-  // ) => {
-  //   await moviesList.render({
-  //     genres: ['16'],
-  //     maxRank: '7.6',
-  //     sort: 'popularity.asc'
-  //   });
-  // }, 5000)
 } catch (error) {
-  console.error(`${error}. Просто включи ВПН!`);
+  console.error(`${error}`);
 }
-
-//тотал пейдж = 1  -- не нужны стрелки
-//current page 1 -- стрелка неактивна

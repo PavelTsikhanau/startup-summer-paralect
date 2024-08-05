@@ -7,3 +7,9 @@
   width: 119px;
   height: 100%;
 }
+
+.current-page a {
+  color: rgb(115, 0, 255);
+  font-weight: bold;
+}
+
